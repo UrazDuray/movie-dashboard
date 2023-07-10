@@ -148,6 +148,7 @@
     bottom: 0;
     left: 0;
     overflow-y: auto;
+    z-index: 5;
 }
 .PopularFilmsDivClass{
     width: 100%;

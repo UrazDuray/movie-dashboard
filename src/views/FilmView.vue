@@ -9,6 +9,9 @@ import CastComponent from "../components/CastComponent.vue"
         computed:{
             filmId (){
                 return this.$route.params.id
+            },
+            isMobile(){
+                return screen.width <= 600
             }
         },
         data() {
@@ -41,7 +44,6 @@ import CastComponent from "../components/CastComponent.vue"
             GetCredits(){
                 this.$GlobalFunctions.GetCredits({filmId: this.filmId}).then(response => {
                     this.creditsData = response.cast
-                    console.log(this.creditsData)
                 })
             },
 
@@ -103,8 +105,10 @@ import CastComponent from "../components/CastComponent.vue"
                     <span :style="{marginRight: '8px'}" :class="'FilmViewLeftBottomDivTitlesClass'">Companies involved:</span>
                     <img v-for="company in this.filmDetails.production_companies" :class="'ProductionCompanyImgClass'" :src="'https://image.tmdb.org/t/p/w500/' + company.logo_path" alt="">
                 </div> -->
-            </div>
-            
+                <div v-if="this.isMobile" :class="'CastDiv'">
+                    <CastComponent v-for="cast in this.creditsData" :id="cast.id" :department="cast.known_for_department" :imagePath="cast.profile_path" :originalName="cast.original_name"></CastComponent>
+                </div>
+            </div> 
         </div>
         <div :class="'FilmViewRightDivClass'">
             <div :class="'FilmViewTitleDivClass'">
@@ -125,7 +129,7 @@ import CastComponent from "../components/CastComponent.vue"
             </div>
             <div :class="'FilmViewOverviewDivClass'">{{ this.filmDetails.overview }}</div>
             <span :class="'FilmViewTitles'">Credits</span>
-            <div :class="'CastDiv'">
+            <div v-if="!this.isMobile" :class="'CastDiv'">
                 <CastComponent v-for="cast in this.creditsData" :id="cast.id" :department="cast.known_for_department" :imagePath="cast.profile_path" :originalName="cast.original_name"></CastComponent>
             </div>
         </div>
@@ -140,8 +144,9 @@ import CastComponent from "../components/CastComponent.vue"
     width: 100vw;
     bottom: 0;
     left: 0;
-    padding: 2vw;
+    padding: 0;
     overflow-y: auto;
+    display: flex;
 }
 .hrClass{
     margin: 3vh 0 3vh 0;
@@ -149,10 +154,8 @@ import CastComponent from "../components/CastComponent.vue"
 }
 /* left  */
 .FilmViewLeftDivClass{
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
+    height: 100%;
+    /* background-color: red; */
     width: var( --film-view-left-bar-width);   
 }
 .FilmImageDivClass{
@@ -167,8 +170,7 @@ import CastComponent from "../components/CastComponent.vue"
     border-radius: 10px;
 }
 .FilmViewLeftBottomDivClass{
-    position: absolute;
-    width: var(--film-view-left-bar-width);
+    width: 100%;
     padding: 2vh 2vw 0 2vw;
 }
 .FilmViewTaglineClass{
@@ -178,11 +180,7 @@ import CastComponent from "../components/CastComponent.vue"
 }
 /* right */
 .FilmViewRightDivClass{
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    left: var( --film-view-left-bar-width);
+    width: calc(100% - var( --film-view-left-bar-width)); 
 }
 /* title */
 .FilmViewTitles{
@@ -261,5 +259,21 @@ import CastComponent from "../components/CastComponent.vue"
     overflow-y: hidden;
     padding-bottom: 20px;
     margin: 0vh 1vw 4vh 2vw;
+}
+@media screen and (max-width: 600px) {
+    .FilmViewClass {
+        flex-direction: column-reverse;
+    }
+    .FilmViewRightDivClass{
+        width: 100%;
+        padding: 5vw;
+    }
+    .FilmViewLeftDivClass{
+        width: 100%;
+        padding: 5vw;
+    }
+    .CastDiv{
+        margin-top: 4vh;
+    }
 }
 </style>

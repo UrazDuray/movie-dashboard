@@ -1,7 +1,7 @@
 {
   "name": "movie-dashboard",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.9.0",
+  "Author": "UrazDuray",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

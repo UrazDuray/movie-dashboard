@@ -1,7 +1,4 @@
 <script>
-    import axios from 'axios';
-
-
     export default {
         props: {
             imagePath: String,
@@ -10,7 +7,8 @@
             onStartFavorited: Boolean,
             releaseDate: String,
             filmOverview: String,
-            filmId: Number
+            filmId: Number,
+            userId: 20106117
         },
         computed:{
             ratingBackgroundColor(){
@@ -34,27 +32,10 @@
                 this.$router.push('/film/' + this.filmId)
             },
             FavoriteStateChange(){
-                this.favorited = !this.favorited
-                axios.post('https://api.themoviedb.org/3/account/20106117/favorite', 
-                    {
-                        "media_type": "movie",
-                        "media_id": this.filmId,
-                        "favorite": this.favorited
-                    },
-                    {
-                        headers: {
-                            'Accept': 'application/json', 
-                            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNWIyMDc0YmUxYzgwNjM5ZjU3NzIzODY1ZGIyMjFkYiIsInN1YiI6IjY0YTQzMGNkMTEzODZjMDBjNTkxZDFhYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.NHMqelvrHKCX8Ry3ohbBRTAWnmoaSFMgCzgL8HZgFaA', 
-                            'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => {
-                    console.log(response.data);
+                this.favorited = ! this.favorited
+                this.$GlobalFunctions.SetFavoriteState({userId: this.userId, filmId: this.filmId, favorited: this.favorited}).then(response => {
                     this.UpdateFavoriteIconName()
                 })
-                .catch(error => {
-                    console.error(error);
-                });
             }
         },
         mounted() {
@@ -103,7 +84,6 @@
     transition-duration: 150ms;
     user-select: none;
     display: grid;
-    
 }
 /* film mini image div */
 .FilmMiniImageDivClass{
@@ -171,6 +151,8 @@
     font-size: 18px;
     opacity: 0.8;
     margin: 0 0.5vw 0 0.5vw;
+    overflow: hidden;
+    height: 70px;
 }
 
 /* bottom div bottom */
@@ -203,7 +185,4 @@
     font-size: 20px;
     color: rgb(190, 190, 190);
 }
-
-
-
 </style>
