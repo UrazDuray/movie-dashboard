@@ -133,7 +133,7 @@
             <FilmMini v-for="film in filmsData.results" :filmId="film.id" :imagePath="film.poster_path" :filmOverview="film.overview" :releaseDate="film.release_date != undefined ? film.release_date.slice(0,4) : 'N/A'" :rating="film.vote_average" :title="film.title" :onStartFavorited="this.CheckIfFavorited(film.id)"/>
         </div>
         <div v-else :class="'PopularFilmsDivClass'">
-            <span :class="'PopularFilmsTitleClass'">Search</span>
+            <span :class="'PopularFilmsTitleClass'">Search Films</span>
             <FilmMini v-for="film in searchData.results" :filmId="film.id" :imagePath="film.poster_path" :filmOverview="film.overview" :releaseDate="film.release_date != undefined ? film.release_date.slice(0,4) : 'N/A'" :rating="film.vote_average" :title="film.title" :onStartFavorited="this.CheckIfFavorited(film.id)"/>
         </div>
         <PageNavigationComponent ref="ref_PageNavigationComponent" :maxPageCount="maxPageCount" @pageUpdate="PageUpdate"/>
