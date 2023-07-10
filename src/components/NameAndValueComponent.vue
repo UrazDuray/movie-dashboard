@@ -14,9 +14,9 @@
 
 <template>
     <div :class="'NameAndValueComponentMainClass'">
-        <span :class="'NameAndValueComponentTitleClass'">{{this.title}}:</span>
+        <span :class="'NameAndValueComponentTitleClass'">{{title}}:</span>
         <div>
-            <BlockTextComponent :backgroundColor="this.color">{{this.value}}</BlockTextComponent>
+            <BlockTextComponent :backgroundColor="color">{{value}}</BlockTextComponent>
         </div>
     </div>
 </template>

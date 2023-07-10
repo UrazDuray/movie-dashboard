@@ -1,7 +1,10 @@
 <script setup>
-    import { getTransitionRawChildren } from "vue";
-import CastComponent from "../components/CastComponent.vue"
+
+    import CastComponent from "../components/CastComponent.vue"
     import TagComponent from "../components/TagComponent.vue"
+    import HeartIcon from "../icons/heartIcon.png"
+    import HeartIconHover from "../icons/heartIconHover.png"
+    import heartIconSelected from "../icons/heartIconSelected.png"
 </script>
 
 <script>
@@ -19,7 +22,7 @@ import CastComponent from "../components/CastComponent.vue"
                 filmDetails: {},
                 ratingValue: 0,
                 ratingBackgroundColor: '',
-                currentFavoriteIconName: "heartIcon",
+                currentFavoriteIcon: HeartIcon,
                 hoveringFavoriteIcon: false,
                 favorited: false,
                 userId: 20106117,
@@ -60,7 +63,7 @@ import CastComponent from "../components/CastComponent.vue"
                 this.ratingBackgroundColor = `hsl(${this.ratingValue*13}, 61%, 59%)` //*130/10 = 13
             },
             UpdateFavoriteIconName(){
-                this.favorited ? this.currentFavoriteIconName = "heartIconSelected" : this.currentFavoriteIconName = "heartIcon"
+                this.favorited ? this.currentFavoriteIcon = heartIconSelected : this.currentFavoriteIcon = HeartIcon
                 this.hoveringFavoriteIcon = false
             },
             FavoriteStateChange(){
@@ -83,54 +86,54 @@ import CastComponent from "../components/CastComponent.vue"
     <div :class="'FilmViewClass'">
         <div :class="'FilmViewLeftDivClass'">
             <div :class="'FilmImageDivClass'">
-                <img v-if="this.filmDetails.backdrop_path" :class="'FilmImageClass'" :src="'https://image.tmdb.org/t/p/w500/' + this.filmDetails.backdrop_path" alt="">
+                <img v-if="filmDetails.backdrop_path" :class="'FilmImageClass'" :src="'https://image.tmdb.org/t/p/w500/' + filmDetails.backdrop_path" alt="">
             </div>
             <div :class="'FilmViewLeftBottomDivClass'">
-                <div :class="'FilmViewTaglineClass'">{{this.filmDetails.tagline}}</div>
+                <div :class="'FilmViewTaglineClass'">{{filmDetails.tagline}}</div>
                 <hr :class="'hrClass'">
                 <div>
                     <span :class="'FilmViewLeftBottomDivTitlesClass'">Budget: </span>
-                    <span :class="'FilmViewLeftBottomDivInfoClass'">{{FormatNumber(this.filmDetails.budget)}}</span>
+                    <span :class="'FilmViewLeftBottomDivInfoClass'">{{FormatNumber(filmDetails.budget)}}</span>
                 </div>
                 <div>
                     <span :class="'FilmViewLeftBottomDivTitlesClass'">Revenue: </span>
-                    <span :class="'FilmViewLeftBottomDivInfoClass'">{{FormatNumber(this.filmDetails.revenue)}}</span>
+                    <span :class="'FilmViewLeftBottomDivInfoClass'">{{FormatNumber(filmDetails.revenue)}}</span>
                 </div>
                 <hr :class="'hrClass'">
                 <div>
                     <span :style="{marginRight: '8px'}" :class="'FilmViewLeftBottomDivTitlesClass'">Tags:</span>
-                    <TagComponent v-for="genre in this.filmDetails.genres">{{genre.name}}</TagComponent>
+                    <TagComponent v-for="genre in filmDetails.genres">{{genre.name}}</TagComponent>
                 </div>
                 <!-- <div :style="{display: 'grid', justifyContent: 'center'}">
                     <span :style="{marginRight: '8px'}" :class="'FilmViewLeftBottomDivTitlesClass'">Companies involved:</span>
-                    <img v-for="company in this.filmDetails.production_companies" :class="'ProductionCompanyImgClass'" :src="'https://image.tmdb.org/t/p/w500/' + company.logo_path" alt="">
+                    <img v-for="company in filmDetails.production_companies" :class="'ProductionCompanyImgClass'" :src="'https://image.tmdb.org/t/p/w500/' + company.logo_path" alt="">
                 </div> -->
-                <div v-if="this.isMobile" :class="'CastDiv'">
-                    <CastComponent v-for="cast in this.creditsData" :id="cast.id" :department="cast.known_for_department" :imagePath="cast.profile_path" :originalName="cast.original_name"></CastComponent>
+                <div v-if="isMobile" :class="'CastDiv'">
+                    <CastComponent v-for="cast in creditsData" :id="cast.id" :department="cast.known_for_department" :imagePath="cast.profile_path" :originalName="cast.original_name"></CastComponent>
                 </div>
             </div> 
         </div>
         <div :class="'FilmViewRightDivClass'">
             <div :class="'FilmViewTitleDivClass'">
-                <span v-if="this.filmDetails.title != undefined" v-for="word in this.filmDetails.title.split(' ')" :class="'FilmViewTitles'">{{word + '&nbsp'}}</span>
+                <span v-if="filmDetails.title != undefined" v-for="word in filmDetails.title.split(' ')" :class="'FilmViewTitles'">{{word + '&nbsp'}}</span>
                 <span v-else :class="'FilmViewTitles'">Loading...</span>
-                <div v-if="this.ratingValue" :style="{backgroundColor: this.ratingBackgroundColor}" :class="'FilmViewRatingDivClass'" >{{ this.ratingValue + '/10' }}</div>
+                <div v-if="ratingValue" :style="{backgroundColor: ratingBackgroundColor}" :class="'FilmViewRatingDivClass'" >{{ ratingValue + '/10' }}</div>
             </div>
             <div :class="'FilmViewSubTitleDivClass'">
-                <span>{{this.filmDetails.release_date != undefined ? this.filmDetails.release_date.split('-').reverse().join('.') : 'Loading...'}}</span>
+                <span>{{filmDetails.release_date != undefined ? filmDetails.release_date.split('-').reverse().join('.') : 'Loading...'}}</span>
                 &nbsp
                 &#x2022
                 &nbsp
-                <span :class="'OriginalLanguageSpanClass'">{{ this.filmDetails.original_language ? this.filmDetails.original_language.toUpperCase() : 'Loading...' }}</span>
+                <span :class="'OriginalLanguageSpanClass'">{{ filmDetails.original_language ? filmDetails.original_language.toUpperCase() : 'Loading...' }}</span>
                 &nbsp
                 &#x2022
                 &nbsp
-                <button :style="{opacity: this.hoveringFavoriteIcon || this.favorited ? '1' : '0.7'}" @click="FavoriteStateChange()" @mouseenter="hoveringFavoriteIcon = true" @mouseleave="hoveringFavoriteIcon = false" :class="'FilmMiniFavoriteButtonClass'"><img :src="this.hoveringFavoriteIcon ? '/src/icons/heartIconHover.png' : `/src/icons/${this.currentFavoriteIconName}.png`" alt=""></button>
+                <button :style="{opacity: hoveringFavoriteIcon || favorited ? '1' : '0.7'}" @click="FavoriteStateChange()" @mouseenter="hoveringFavoriteIcon = true" @mouseleave="hoveringFavoriteIcon = false" :class="'FilmMiniFavoriteButtonClass'"><img :src="hoveringFavoriteIcon ? HeartIconHover : currentFavoriteIcon" alt=""></button>
             </div>
-            <div :class="'FilmViewOverviewDivClass'">{{ this.filmDetails.overview }}</div>
+            <div :class="'FilmViewOverviewDivClass'">{{ filmDetails.overview }}</div>
             <span :class="'FilmViewTitles'">Credits</span>
-            <div v-if="!this.isMobile" :class="'CastDiv'">
-                <CastComponent v-for="cast in this.creditsData" :id="cast.id" :department="cast.known_for_department" :imagePath="cast.profile_path" :originalName="cast.original_name"></CastComponent>
+            <div v-if="!isMobile" :class="'CastDiv'">
+                <CastComponent v-for="cast in creditsData" :id="cast.id" :department="cast.known_for_department" :imagePath="cast.profile_path" :originalName="cast.original_name"></CastComponent>
             </div>
         </div>
         

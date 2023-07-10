@@ -52,8 +52,8 @@
                 this.SetProgressBarState(true)
                 const searchContentTemp = this.searchContent.toLocaleLowerCase()
                 this.searchData.results = this.filmsData.results.filter(function (el) {
+                    this.SetProgressBarState(true)
                     return el.title.toLowerCase().includes(searchContentTemp)
-                    this.SetProgressBarState(false)
                 });
             },
             MaxPageUpdater(maxPage){
@@ -110,7 +110,7 @@
                         this.searching ? this.GetSearchedFilmDataFunction() : this.GetFilmDataFunction()
                         return
                     }
-                    this.$refs.ref_PageNavigationComponent.OverridePage(1);
+                    $refs.ref_PageNavigationComponent.OverridePage(1);
                 }
             },
             '$route.name'(newName, oldName) {
@@ -126,15 +126,15 @@
 <template>
     <div :class="'HomeViewClass'">
         <div :class="'SearchDivClass'">
-            <input @input="this.searchContent = $event.target.value" :value="this.searchContent" :placeholder="'Search'" :class="'SearchInputClass'" type="text">
+            <input @input="searchContent = $event.target.value" :value="searchContent" :placeholder="'Search'" :class="'SearchInputClass'" type="text">
         </div>
-        <div v-if="!this.searching" :class="'PopularFilmsDivClass'">
-            <span :class="'PopularFilmsTitleClass'">{{ this.viewMode == "home" ? 'Popular Films' : 'Favorite Films' }}</span>
-            <FilmMini v-for="film in filmsData.results" :filmId="film.id" :imagePath="film.poster_path" :filmOverview="film.overview" :releaseDate="film.release_date != undefined ? film.release_date.slice(0,4) : 'N/A'" :rating="film.vote_average" :title="film.title" :onStartFavorited="this.CheckIfFavorited(film.id)"/>
+        <div v-if="!searching" :class="'PopularFilmsDivClass'">
+            <span :class="'PopularFilmsTitleClass'">{{ viewMode == "home" ? 'Popular Films' : 'Favorite Films' }}</span>
+            <FilmMini v-for="film in filmsData.results" :filmId="film.id" :imagePath="film.poster_path" :filmOverview="film.overview" :releaseDate="film.release_date != undefined ? film.release_date.slice(0,4) : 'N/A'" :rating="film.vote_average" :title="film.title" :onStartFavorited="CheckIfFavorited(film.id)"/>
         </div>
         <div v-else :class="'PopularFilmsDivClass'">
             <span :class="'PopularFilmsTitleClass'">Search Films</span>
-            <FilmMini v-for="film in searchData.results" :filmId="film.id" :imagePath="film.poster_path" :filmOverview="film.overview" :releaseDate="film.release_date != undefined ? film.release_date.slice(0,4) : 'N/A'" :rating="film.vote_average" :title="film.title" :onStartFavorited="this.CheckIfFavorited(film.id)"/>
+            <FilmMini v-for="film in searchData.results" :filmId="film.id" :imagePath="film.poster_path" :filmOverview="film.overview" :releaseDate="film.release_date != undefined ? film.release_date.slice(0,4) : 'N/A'" :rating="film.vote_average" :title="film.title" :onStartFavorited="CheckIfFavorited(film.id)"/>
         </div>
         <PageNavigationComponent ref="ref_PageNavigationComponent" :maxPageCount="maxPageCount" @pageUpdate="PageUpdate"/>
     </div>

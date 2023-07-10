@@ -10,7 +10,7 @@
 </script>
 
 <template>
-    <div :style="{backgroundColor: this.backgroundColor}" :class="'BlockTextComponentMainClass'">
+    <div :style="{backgroundColor: backgroundColor}" :class="'BlockTextComponentMainClass'">
         <slot></slot>
     </div>
 </template>

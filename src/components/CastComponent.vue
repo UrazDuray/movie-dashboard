@@ -24,10 +24,10 @@
 
 <template>
     <div :class="'ActorComponentMainClass'">
-        <div :class="'TopDiv'"><img v-if="this.imagePath" :src="'https://image.tmdb.org/t/p/w500/' + this.imagePath" alt="Porfile image unavailable"></div>
+        <div :class="'TopDiv'"><img v-if="imagePath" :src="'https://image.tmdb.org/t/p/w500/' + imagePath" alt="Porfile image unavailable"></div>
         <div :class="'BottomDiv'">
-            <span :class="'OriginalNameSpan'">{{ this.originalName }}</span>
-            <span :style="{color: this.departmentColor}" :class="'DepartmentNameSpan'">{{ this.department }}</span>
+            <span :class="'OriginalNameSpan'">{{ originalName }}</span>
+            <span :style="{color: departmentColor}" :class="'DepartmentNameSpan'">{{ department }}</span>
         </div>
     </div>
 </template>

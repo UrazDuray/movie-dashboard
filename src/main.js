@@ -9,6 +9,7 @@ const app = createApp(App)
 
 app.config.globalProperties.$GlobalFunctions = GlobalFunctions;
 
+
 app.use(router)
 
 app.mount('#app')

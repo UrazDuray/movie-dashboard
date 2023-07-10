@@ -1,3 +1,9 @@
+<script setup>
+    import HeartIcon from "../icons/heartIcon.png"
+    import HeartIconHover from "../icons/heartIconHover.png"
+    import heartIconSelected from "../icons/heartIconSelected.png"
+</script>
+
 <script>
     export default {
         props: {
@@ -17,7 +23,7 @@
         },
         data() {
             return {
-                currentFavoriteIconName: "heartIcon",
+                currentFavoriteIcon: HeartIcon,
                 filmMiniImageHover: false,
                 hoveringFavoriteIcon: false,
                 favorited: Boolean,
@@ -25,7 +31,7 @@
         },
         methods: {
             UpdateFavoriteIconName(){
-                this.favorited ? this.currentFavoriteIconName = "heartIconSelected" : this.currentFavoriteIconName = "heartIcon"
+                this.favorited ? this.currentFavoriteIcon = heartIconSelected : this.currentFavoriteIcon = HeartIcon
                 this.hoveringFavoriteIcon = false
             },
             OpenFilmDetails(){
@@ -56,19 +62,19 @@
 
 <template>
     <div :class="'FilmMiniClass'">
-        <div @click="OpenFilmDetails" @mouseenter="this.filmMiniImageHover = true" @mouseleave="this.filmMiniImageHover = false" :class="'FilmMiniImageDivClass'">   
-            <img v-if="this.imagePath" draggable="false" :class="['FilmMiniImageClass', filmMiniImageHover ? 'FilmMiniImageClassZoomInClass': null]" :src="'https://image.tmdb.org/t/p/w500/' + this.imagePath" alt="Poster Unavailable">
-            <span :class="['FilmMiniOverviewSpanClass', filmMiniImageHover ? 'FilmMiniOverviewSpanHoverClass': null]">{{ this.filmOverview }}</span>
+        <div @click="OpenFilmDetails" @mouseenter="filmMiniImageHover = true" @mouseleave="filmMiniImageHover = false" :class="'FilmMiniImageDivClass'">   
+            <img v-if="imagePath" draggable="false" :class="['FilmMiniImageClass', filmMiniImageHover ? 'FilmMiniImageClassZoomInClass': null]" :src="'https://image.tmdb.org/t/p/w500/' + imagePath" alt="Poster Unavailable">
+            <span :class="['FilmMiniOverviewSpanClass', filmMiniImageHover ? 'FilmMiniOverviewSpanHoverClass': null]">{{ filmOverview }}</span>
         </div>
         <div :class="'FilmMiniBottomDivClass'">
             <div :class="'FilmMiniBottomDivTitleDivClass'">
-                <span :class="'FilmMiniBottomDivTitleClass'">{{this.title}}</span>
+                <span :class="'FilmMiniBottomDivTitleClass'">{{title}}</span>
             </div>
             
             <div :class="'FilmMiniBottomDivBottomClass'">
-                <div :class="'FilmMiniDateDivClass'">{{this.releaseDate}}</div>
-                <div :style="{backgroundColor: this.ratingBackgroundColor}" :class="'FilmMiniRatingDivClass'">{{this.rating.toFixed(1)}}</div>
-                <button @click="FavoriteStateChange()" @mouseenter="hoveringFavoriteIcon = true" @mouseleave="hoveringFavoriteIcon = false" :class="'FilmMiniFavoriteButtonClass'"><img :src="this.hoveringFavoriteIcon ? '/src/icons/heartIconHover.png' : `/src/icons/${this.currentFavoriteIconName}.png`" alt=""></button>
+                <div :class="'FilmMiniDateDivClass'">{{releaseDate}}</div>
+                <div :style="{backgroundColor: ratingBackgroundColor}" :class="'FilmMiniRatingDivClass'">{{rating.toFixed(1)}}</div>
+                <button @click="FavoriteStateChange()" @mouseenter="hoveringFavoriteIcon = true" @mouseleave="hoveringFavoriteIcon = false" :class="'FilmMiniFavoriteButtonClass'"><img :src="hoveringFavoriteIcon ? HeartIconHover : currentFavoriteIcon" alt=""></button>
             </div>
         </div>
     </div>

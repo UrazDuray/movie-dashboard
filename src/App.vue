@@ -15,8 +15,8 @@ import HeaderComponent from './components/HeaderComponent.vue';
 
 <template>
   <HeaderComponent/>
-  <RouterView @ProgressBarStateUpdate="(state) => this.progressBarLoadingState = state"/>
-  <div :class="['PageProgressBarClass', (this.progressBarLoadingState ? 'PageProgressBarClassLoadingAnimClass' : 'PageProgressBarClassLoadedAnimClass') ]">No connection</div>
+  <RouterView @ProgressBarStateUpdate="(state) => progressBarLoadingState = state"/>
+  <div :class="['PageProgressBarClass', (progressBarLoadingState ? 'PageProgressBarClassLoadingAnimClass' : 'PageProgressBarClassLoadedAnimClass') ]">No connection</div>
 </template>
 
 <style>

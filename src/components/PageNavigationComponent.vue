@@ -51,9 +51,9 @@
     <div :class="'PageNavigationDivClass'">
         <span :style="{textAlign: 'end'}" :class="'PageSideNumbersClass'">1</span>
         <button @click="PageUpdate('increment', -1)" :class="'PageNavigationButtonClass'"><img src="../icons/navigationArrowIcon.png" alt=""></button>
-        <input :style="this.wrongPageInput ? {color: 'red'} : null" @input="PageUpdate('set', $event.target.value)" :value="this.pageClient" :class="'PageNavigationInputClass'" type="text">
+        <input :style="wrongPageInput ? {color: 'red'} : null" @input="PageUpdate('set', $event.target.value)" :value="pageClient" :class="'PageNavigationInputClass'" type="text">
         <button @click="PageUpdate('increment', 1)" :class="'PageNavigationButtonClass'"><img src="../icons/navigationArrowIcon.png" :style="{transform: 'rotate(180deg)'}" alt=""></button>
-        <span :style="{textAlign: 'start'}" :class="'PageSideNumbersClass'">{{ this.maxPageCount }}</span>
+        <span :style="{textAlign: 'start'}" :class="'PageSideNumbersClass'">{{ maxPageCount }}</span>
     </div>
 </template>
 
