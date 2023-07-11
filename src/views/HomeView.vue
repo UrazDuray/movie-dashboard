@@ -19,7 +19,6 @@
                 maxPageCount: 500,
                 GetFilmDataFunction: function(){},
                 GetSearchedFilmDataFunction: function(){},
-                userId: 20106117,
                 viewMode: '',
                 ScrollToTop: function(){}
             }
@@ -44,7 +43,7 @@
             },
             GetFavoriteFilms() {
                 this.SetProgressBarState(true)
-                this.$GlobalFunctions.GetFavoriteFilms({userId: this.userId, page: this.page}).then(response => {
+                this.$GlobalFunctions.GetFavoriteFilms({page: this.page}).then(response => {
                     this.favoritesData = response
                     if(this.viewMode == "favorites") this.filmsData = this.favoritesData
                     this.MaxPageUpdater(this.filmsData.total_pages)
@@ -180,6 +179,7 @@
     padding: 2vh 2vw 2vh 2vw;
     display: flex;
     text-align: center;
+    justify-content: center;
     align-items: center;
 }
 </style>

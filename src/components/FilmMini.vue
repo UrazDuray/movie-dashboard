@@ -13,8 +13,7 @@
             onStartFavorited: Boolean,
             releaseDate: String,
             filmOverview: String,
-            filmId: Number,
-            userId: 20106117
+            filmId: Number
         },
         computed:{
             ratingBackgroundColor(){
@@ -39,7 +38,7 @@
             },
             FavoriteStateChange(){
                 this.favorited = ! this.favorited
-                this.$GlobalFunctions.SetFavoriteState({userId: this.userId, filmId: this.filmId, favorited: this.favorited}).then(response => {
+                this.$GlobalFunctions.SetFavoriteState({filmId: this.filmId, favorited: this.favorited}).then(response => {
                     this.UpdateFavoriteIconName()
                 })
             }

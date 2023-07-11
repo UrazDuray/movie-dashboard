@@ -16,7 +16,11 @@
                     case 'Production':
                         return 'lightgreen'
                     case 'Directing':
+                        return 'lightgoldenrodyellow'
+                    case 'Costume & Make-Up':
                         return 'lightpink'
+                    case 'Art':
+                        return 'rgb(186, 138, 234)'
                     default:
                         return "darkgrey"
                 }

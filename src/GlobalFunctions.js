@@ -1,6 +1,9 @@
 import axios from 'axios';
 const apiUrl = 'https://api.themoviedb.org/3/'
 
+const userId = import.meta.env.VITE_TMDB_USER_ID
+const apiKey = import.meta.env.VITE_TMDB_API_KEY
+
 export const GlobalFunctions = {
 
     //api calls
@@ -15,7 +18,7 @@ export const GlobalFunctions = {
                     sort_by: 'popularity.desc'
                 },
                 headers: {
-                    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNWIyMDc0YmUxYzgwNjM5ZjU3NzIzODY1ZGIyMjFkYiIsInN1YiI6IjY0YTQzMGNkMTEzODZjMDBjNTkxZDFhYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.NHMqelvrHKCX8Ry3ohbBRTAWnmoaSFMgCzgL8HZgFaA',
+                    Authorization: 'Bearer ' + apiKey,
                     accept: 'application/json'
                 }
             })
@@ -37,7 +40,7 @@ export const GlobalFunctions = {
                     page: data.page
                 },
                 headers: {
-                    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNWIyMDc0YmUxYzgwNjM5ZjU3NzIzODY1ZGIyMjFkYiIsInN1YiI6IjY0YTQzMGNkMTEzODZjMDBjNTkxZDFhYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.NHMqelvrHKCX8Ry3ohbBRTAWnmoaSFMgCzgL8HZgFaA',
+                    Authorization: 'Bearer ' + apiKey,
                     accept: 'application/json'
                 }
             })
@@ -51,7 +54,7 @@ export const GlobalFunctions = {
     },
     GetFavoriteFilms: (data) => {
         return new Promise((resolve, reject) => {
-            axios.get(apiUrl + 'account/' + data.userId + '/favorite/movies', {
+            axios.get(apiUrl + 'account/' + userId + '/favorite/movies', {
                 params: {
                     include_adult: false,
                     language: 'en-US',
@@ -59,7 +62,7 @@ export const GlobalFunctions = {
                     sort_by: 'created_at.desc'
                 },
                 headers: {
-                    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNWIyMDc0YmUxYzgwNjM5ZjU3NzIzODY1ZGIyMjFkYiIsInN1YiI6IjY0YTQzMGNkMTEzODZjMDBjNTkxZDFhYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.NHMqelvrHKCX8Ry3ohbBRTAWnmoaSFMgCzgL8HZgFaA',
+                    Authorization: 'Bearer ' + apiKey,
                     accept: 'application/json'
                 }
             })
@@ -78,7 +81,7 @@ export const GlobalFunctions = {
                     language: 'en-US'
                 },
                 headers: {
-                    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNWIyMDc0YmUxYzgwNjM5ZjU3NzIzODY1ZGIyMjFkYiIsInN1YiI6IjY0YTQzMGNkMTEzODZjMDBjNTkxZDFhYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.NHMqelvrHKCX8Ry3ohbBRTAWnmoaSFMgCzgL8HZgFaA',
+                    Authorization: 'Bearer ' + apiKey,
                     accept: 'application/json'
                 }
             })
@@ -95,7 +98,7 @@ export const GlobalFunctions = {
         return new Promise((resolve, reject) => {
             axios.get(apiUrl + 'movie/' + data.filmId +'/account_states', {
                 headers: {
-                    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNWIyMDc0YmUxYzgwNjM5ZjU3NzIzODY1ZGIyMjFkYiIsInN1YiI6IjY0YTQzMGNkMTEzODZjMDBjNTkxZDFhYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.NHMqelvrHKCX8Ry3ohbBRTAWnmoaSFMgCzgL8HZgFaA',
+                    Authorization: 'Bearer ' + apiKey,
                     accept: 'application/json'
                 }
             })
@@ -109,7 +112,7 @@ export const GlobalFunctions = {
     },
     SetFavoriteState: (data) => {
         return new Promise((resolve, reject) => {
-            axios.post(apiUrl + 'account/' + data.userId +'/favorite', 
+            axios.post(apiUrl + 'account/' + userId +'/favorite', 
                 {
                     "media_type": "movie",
                     "media_id": data.filmId,
@@ -118,7 +121,7 @@ export const GlobalFunctions = {
                 {
                     headers: {
                         'Accept': 'application/json', 
-                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNWIyMDc0YmUxYzgwNjM5ZjU3NzIzODY1ZGIyMjFkYiIsInN1YiI6IjY0YTQzMGNkMTEzODZjMDBjNTkxZDFhYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.NHMqelvrHKCX8Ry3ohbBRTAWnmoaSFMgCzgL8HZgFaA', 
+                        'Authorization': 'Bearer ' + apiKey, 
                         'Content-Type': 'application/json'
                 }
             })
@@ -138,7 +141,7 @@ export const GlobalFunctions = {
                 },
                 headers: {
                     'Accept': 'application/json', 
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNWIyMDc0YmUxYzgwNjM5ZjU3NzIzODY1ZGIyMjFkYiIsInN1YiI6IjY0YTQzMGNkMTEzODZjMDBjNTkxZDFhYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.NHMqelvrHKCX8Ry3ohbBRTAWnmoaSFMgCzgL8HZgFaA', 
+                    'Authorization': 'Bearer ' + apiKey, 
                     'Content-Type': 'application/json'
                 }
             })

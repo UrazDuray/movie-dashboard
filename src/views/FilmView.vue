@@ -22,7 +22,6 @@
                 currentFavoriteIcon: HeartIcon,
                 hoveringFavoriteIcon: false,
                 favorited: false,
-                userId: 20106117,
                 creditsData: {},
                 isMobile: false,
                 favoriteJumping: false
@@ -68,7 +67,7 @@
             FavoriteStateChange(){
                 this.favorited = !this.favorited
                 this.favoriteJumping = true
-                this.$GlobalFunctions.SetFavoriteState({userId: this.userId, filmId: this.filmDetails.id, favorited: this.favorited}).then(response => {
+                this.$GlobalFunctions.SetFavoriteState({filmId: this.filmDetails.id, favorited: this.favorited}).then(response => {
                     this.UpdateFavoriteIconName()
                     this.favoriteJumping = false
                 })  
