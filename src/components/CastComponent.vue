@@ -13,6 +13,8 @@
                         return 'lightblue'
                     case 'Crew':
                         return 'lightsalmon'
+                    case 'Production':
+                        return 'lightgreen'
                     default:
                         return "darkgrey"
                 }

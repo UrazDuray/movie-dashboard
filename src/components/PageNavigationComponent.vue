@@ -42,7 +42,7 @@
                 this.pageClient = this.realPage = page
             },
             EmitPageUpdate(page, scrollToTop){
-                this.$emit('PageUpdate', page, scrollToTop)
+                if(!this.wrongPageInput) this.$emit('PageUpdate', page, scrollToTop)
             }
         },
         watch:{
