@@ -13,13 +13,15 @@
                         return 'lightblue'
                     case 'Crew':
                         return 'lightsalmon'
-                    case 'Production':
+                    case 'Writing':
                         return 'lightgreen'
                     case 'Directing':
-                        return 'lightgoldenrodyellow'
-                    case 'Costume & Make-Up':
+                    case 'Production':
+                        return 'rgb(240, 238, 128)'
+                    case 'Editing':
                         return 'lightpink'
                     case 'Art':
+                    case 'Costume & Make-Up':
                         return 'rgb(186, 138, 234)'
                     default:
                         return "darkgrey"
