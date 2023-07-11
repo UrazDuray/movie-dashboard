@@ -39,4 +39,10 @@
 .MainClass:hover{
     opacity: 0.8;
 }
+
+@media screen and (max-width: 600px) {
+    .HeaderButtonClass{
+        font-size: 16px;
+    }
+}
 </style>

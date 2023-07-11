@@ -12,9 +12,6 @@
         computed:{
             filmId (){
                 return this.$route.params.id
-            },
-            isMobile(){
-                return screen.width <= 600
             }
         },
         data() {
@@ -26,7 +23,8 @@
                 hoveringFavoriteIcon: false,
                 favorited: false,
                 userId: 20106117,
-                creditsData: {}
+                creditsData: {},
+                isMobile: false
             }
         },
         methods: {
@@ -72,21 +70,38 @@
                     this.UpdateFavoriteIconName()
                 })  
             },
-            
+            CheckMobile(){
+                this.isMobile = window.document.body.clientWidth <= 600
+            },
+            ScrollToTop(){
+                this.isMobile
+                ? this.$refs.ref_FilmViewClass.scrollTo(0, -this.$refs.ref_FilmViewClass.scrollHeight)
+                : this.$refs.ref_FilmViewClass.scrollTop = 0
+            }
+        },
+        created() {
+            window.addEventListener("resize", this.CheckMobile);
+        },
+        destroyed() {
+            window.removeEventListener("resize", this.CheckMobile);
         },
         mounted() {
+            this.CheckMobile()
             this.CheckIfFavorited()
             this.GetFilmDetails()
             this.GetCredits()
-        }
+        },
+        updated() {
+            this.ScrollToTop()
+        },
     }
 </script>
 
 <template>
-    <div :class="'FilmViewClass'">
+    <div ref="ref_FilmViewClass" :class="'FilmViewClass'">
         <div :class="'FilmViewLeftDivClass'">
             <div :class="'FilmImageDivClass'">
-                <img v-if="filmDetails.backdrop_path" :class="'FilmImageClass'" :src="'https://image.tmdb.org/t/p/w500/' + filmDetails.backdrop_path" alt="">
+                <img v-if="filmDetails.backdrop_path" draggable="false" :class="'FilmImageClass'" :src="'https://image.tmdb.org/t/p/w500/' + filmDetails.backdrop_path" alt="">
             </div>
             <div :class="'FilmViewLeftBottomDivClass'">
                 <div :class="'FilmViewTaglineClass'">{{filmDetails.tagline}}</div>
@@ -108,8 +123,11 @@
                     <span :style="{marginRight: '8px'}" :class="'FilmViewLeftBottomDivTitlesClass'">Companies involved:</span>
                     <img v-for="company in filmDetails.production_companies" :class="'ProductionCompanyImgClass'" :src="'https://image.tmdb.org/t/p/w500/' + company.logo_path" alt="">
                 </div> -->
-                <div v-if="isMobile" :class="'CastDiv'">
-                    <CastComponent v-for="cast in creditsData" :id="cast.id" :department="cast.known_for_department" :imagePath="cast.profile_path" :originalName="cast.original_name"></CastComponent>
+                <div :class="'CreditsDivClass'" v-if="isMobile">
+                    <span :class="'CreditsTitleClass'">Credits</span>
+                    <div :class="'CastDivClass'">
+                        <CastComponent v-for="cast in creditsData" :id="cast.id" :department="cast.known_for_department" :imagePath="cast.profile_path" :originalName="cast.original_name"></CastComponent>
+                    </div>
                 </div>
             </div> 
         </div>
@@ -131,10 +149,13 @@
                 <button :style="{opacity: hoveringFavoriteIcon || favorited ? '1' : '0.7'}" @click="FavoriteStateChange()" @mouseenter="hoveringFavoriteIcon = true" @mouseleave="hoveringFavoriteIcon = false" :class="'FilmMiniFavoriteButtonClass'"><img :src="hoveringFavoriteIcon ? HeartIconHover : currentFavoriteIcon" alt=""></button>
             </div>
             <div :class="'FilmViewOverviewDivClass'">{{ filmDetails.overview }}</div>
-            <span :class="'FilmViewTitles'">Credits</span>
-            <div v-if="!isMobile" :class="'CastDiv'">
-                <CastComponent v-for="cast in creditsData" :id="cast.id" :department="cast.known_for_department" :imagePath="cast.profile_path" :originalName="cast.original_name"></CastComponent>
+            <div :class="'CreditsDivClass'" v-if="!isMobile">
+                <span :class="'CreditsTitleClass'">Credits</span>
+                <div :class="'CastDivClass'">
+                    <CastComponent v-for="cast in creditsData" :id="cast.id" :department="cast.known_for_department" :imagePath="cast.profile_path" :originalName="cast.original_name"></CastComponent>
+                </div>
             </div>
+            
         </div>
         
     </div>
@@ -157,7 +178,6 @@
 }
 /* left  */
 .FilmViewLeftDivClass{
-    height: 100%;
     /* background-color: red; */
     width: var( --film-view-left-bar-width);   
 }
@@ -171,6 +191,7 @@
     width: 90%;
     margin-top: 2vh;
     border-radius: 10px;
+    user-select: none;
 }
 .FilmViewLeftBottomDivClass{
     width: 100%;
@@ -249,20 +270,29 @@
     margin: 1vh 1vw 1vh 1vw;
     filter: invert(1) hue-rotate(180deg);
 }
+.CreditsDivClass{
+    margin-top: 2vh;
+}
+.CreditsTitleClass{
+    color: var(--light-font-color);
+    font-size: calc(20px + 2vw);
+}
+.CastDivClass{
+    justify-content: start;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 20px;
+    margin-top: 1vh;
+}
 .CastTitleSpan{
     font-size: calc(20px + 2vw);
     color: rgb(232, 232, 232);
     display: inline-block;
     margin: 2vh 0 2vh 0;
 }
-.CastDiv{
-    justify-content: start;
-    display: flex;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding-bottom: 20px;
-    margin: 0vh 1vw 4vh 2vw;
-}
+
+
 @media screen and (max-width: 600px) {
     .FilmViewClass {
         flex-direction: column-reverse;
@@ -275,9 +305,6 @@
         width: 100%;
         padding: 5vw;
         margin-bottom: 8vh;
-    }
-    .CastDiv{
-        margin-top: 4vh;        
     }
 }
 </style>

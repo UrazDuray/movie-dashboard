@@ -24,7 +24,7 @@
 
 <template>
     <div :class="'ActorComponentMainClass'">
-        <div :class="'TopDiv'"><img v-if="imagePath" :src="'https://image.tmdb.org/t/p/w500/' + imagePath" alt="Porfile image unavailable"></div>
+        <div :class="'TopDiv'"><img v-if="imagePath" draggable="false" :src="'https://image.tmdb.org/t/p/w500/' + imagePath" alt="Porfile image unavailable"></div>
         <div :class="'BottomDiv'">
             <span :class="'OriginalNameSpan'">{{ originalName }}</span>
             <span :style="{color: departmentColor}" :class="'DepartmentNameSpan'">{{ department }}</span>
@@ -57,6 +57,7 @@
     flex-shrink: 1;
     min-width: 100%;
     min-height: 100%;
+    user-select: none;
 }
 .BottomDiv{
     width: 100%;
