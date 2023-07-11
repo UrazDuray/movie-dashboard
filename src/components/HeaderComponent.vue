@@ -86,10 +86,10 @@ export default {
 @media screen and (max-width: 600px) {
     .LogoImgClass{
         height: 18px;
-        margin-left: 20px;
+        margin-left: 15px;
     }
     .SearchInputClass{
-        font-size: 18px;
+        font-size: 16px;
     }
 }
 </style>

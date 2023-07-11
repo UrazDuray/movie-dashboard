@@ -93,7 +93,6 @@
 }
 /* film mini image div */
 .FilmMiniImageDivClass{
-    width: var(--film-mini-width);
     height: var(--film-mini-image-height);
     border-radius: 1vw 1vw 0 0;
     display: flex;
