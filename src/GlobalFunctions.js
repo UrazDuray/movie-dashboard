@@ -156,7 +156,7 @@ export const GlobalFunctions = {
 
     // apitemplate: (data) => {
     //     return new Promise((resolve, reject) => {
-
+    //         <axios api call>
     //         .then(response => {
     //             resolve(response.data)
     //         })

@@ -62,8 +62,8 @@
 <template>
     <div :class="'FilmMiniClass'">
         <div @click="OpenFilmDetails" @mouseenter="filmMiniImageHover = true" @mouseleave="filmMiniImageHover = false" :class="'FilmMiniImageDivClass'">   
-            <img v-if="imagePath" draggable="false" :class="['FilmMiniImageClass', filmMiniImageHover ? 'FilmMiniImageClassZoomInClass': null]" :src="'https://image.tmdb.org/t/p/w500/' + imagePath" alt="Poster Unavailable">
-            <span :class="['FilmMiniOverviewSpanClass', filmMiniImageHover ? 'FilmMiniOverviewSpanHoverClass': null]">{{ filmOverview }}</span>
+            <img v-if="imagePath" draggable="false" :class="['FilmMiniImageClass', {FilmMiniImageClassZoomInClass : filmMiniImageHover}]" :src="'https://image.tmdb.org/t/p/w500/' + imagePath" alt="Poster Unavailable">
+            <span :class="['FilmMiniOverviewSpanClass', {'FilmMiniOverviewSpanHoverClass': filmMiniImageHover}]">{{ filmOverview }}</span>
         </div>
         <div :class="'FilmMiniBottomDivClass'">
             <div :class="'FilmMiniBottomDivTitleDivClass'">

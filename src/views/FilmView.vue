@@ -24,7 +24,6 @@
                 favorited: false,
                 creditsData: {},
                 isMobile: false,
-                favoriteJumping: false
             }
         },
         methods: {
@@ -66,10 +65,8 @@
             },
             FavoriteStateChange(){
                 this.favorited = !this.favorited
-                this.favoriteJumping = true
                 this.$GlobalFunctions.SetFavoriteState({filmId: this.filmDetails.id, favorited: this.favorited}).then(response => {
                     this.UpdateFavoriteIconName()
-                    this.favoriteJumping = false
                 })  
             },
             CheckMobile(){
@@ -148,7 +145,7 @@
                 &nbsp
                 &#x2022
                 &nbsp
-                <button :style="{opacity: hoveringFavoriteIcon || favorited ? '1' : '0.7'}" @click="FavoriteStateChange()" @mouseenter="hoveringFavoriteIcon = true" @mouseleave="hoveringFavoriteIcon = false" :class="'FilmMiniFavoriteButtonClass'"><img :class="favoriteJumping ? 'HeartIconJumpAnimClass' : null" :src="hoveringFavoriteIcon ? HeartIconHover : currentFavoriteIcon" alt=""></button>
+                <button :style="{opacity: hoveringFavoriteIcon || favorited ? '1' : '0.7'}" @click="FavoriteStateChange()" @mouseenter="hoveringFavoriteIcon = true" @mouseleave="hoveringFavoriteIcon = false" :class="'FilmMiniFavoriteButtonClass'"><img :src="hoveringFavoriteIcon ? HeartIconHover : currentFavoriteIcon" alt=""></button>
             </div>
             <div :class="'FilmViewOverviewDivClass'">{{ filmDetails.overview }}</div>
             <div :class="'CreditsDivClass'" v-if="!isMobile">
