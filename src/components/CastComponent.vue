@@ -15,6 +15,8 @@
                         return 'lightsalmon'
                     case 'Production':
                         return 'lightgreen'
+                    case 'Directing':
+                        return 'lightpink'
                     default:
                         return "darkgrey"
                 }
