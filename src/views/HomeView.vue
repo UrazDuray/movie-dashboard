@@ -5,6 +5,9 @@
 
 <script>
     export default {
+        props:{
+            searchContent: String
+        },
         data() {
             return {
                 filmsData: {},
@@ -13,12 +16,12 @@
                 page: 1,
                 searchData: {},
                 searching: false,
-                searchContent: "",
                 maxPageCount: 500,
                 GetFilmDataFunction: function(){},
                 GetSearchedFilmDataFunction: function(){},
                 userId: 20106117,
-                viewMode: ''
+                viewMode: '',
+                ScrollToTop: function(){}
             }
         },
         methods: {
@@ -49,10 +52,8 @@
                 })
             },
             GetSearchedFavoriteFilms(){
-                this.SetProgressBarState(true)
                 const searchContentTemp = this.searchContent.toLocaleLowerCase()
                 this.searchData.results = this.filmsData.results.filter(function (el) {
-                    this.SetProgressBarState(true)
                     return el.title.toLowerCase().includes(searchContentTemp)
                 });
             },
@@ -64,12 +65,13 @@
                     this.maxPageCount  = maxPage
                 }
             },
-            PageUpdate(page){
-                this.page = page   
+            PageUpdate(page, scrollToTop){
+                this.page = page
+                if(scrollToTop) this.ScrollToTop()
             },
             OnRouteChange(){
                 this.searching = false
-                this.searchContent = ""
+                this.$emit('OverrideSearchContent', "")
                 if(this.viewMode == "home"){
                     this.GetFilmDataFunction = this.GetPopulerFilms
                     this.GetSearchedFilmDataFunction = this.GetSearchedPopulerFilms
@@ -78,11 +80,11 @@
                     this.GetFilmDataFunction = this.GetFavoriteFilms
                     this.GetSearchedFilmDataFunction = this.GetSearchedFavoriteFilms
                 }
-                this.PageUpdate(1)
+                this.PageUpdate(1, true)
                 this.$refs.ref_PageNavigationComponent.OverridePage(1);
                 this.GetFavoriteFilms()
                 this.GetFilmDataFunction()
-                
+                this.ScrollToTop()
             },
             CheckIfFavorited(id){
                 return this.$GlobalFunctions.CheckIfFavorited(this.favoritesData.results, id)
@@ -94,6 +96,9 @@
         mounted() {
             this.viewMode = this.$route.name
             this.OnRouteChange()
+            this.ScrollToTop = function(){
+                this.$refs.ref_HomeViewClass.scroll({top: 0, behavior: "smooth"})
+            }
             
         },
         watch:{
@@ -110,7 +115,7 @@
                         this.searching ? this.GetSearchedFilmDataFunction() : this.GetFilmDataFunction()
                         return
                     }
-                    $refs.ref_PageNavigationComponent.OverridePage(1);
+                    this.$refs.ref_PageNavigationComponent.OverridePage(1);
                 }
             },
             '$route.name'(newName, oldName) {
@@ -124,19 +129,21 @@
 </script>
 
 <template>
-    <div :class="'HomeViewClass'">
-        <div :class="'SearchDivClass'">
-            <input @input="searchContent = $event.target.value" :value="searchContent" :placeholder="'Search'" :class="'SearchInputClass'" type="text">
+    <div ref="ref_HomeViewClass" :class="'HomeViewClass'">
+        <div :class="'NoResultsDiv'" v-if="searchData.results && searchData.results.length == 0">
+            <span>Couldn't find the movie you are looking for</span>
         </div>
-        <div v-if="!searching" :class="'PopularFilmsDivClass'">
-            <span :class="'PopularFilmsTitleClass'">{{ viewMode == "home" ? 'Popular Films' : 'Favorite Films' }}</span>
-            <FilmMini v-for="film in filmsData.results" :filmId="film.id" :imagePath="film.poster_path" :filmOverview="film.overview" :releaseDate="film.release_date != undefined ? film.release_date.slice(0,4) : 'N/A'" :rating="film.vote_average" :title="film.title" :onStartFavorited="CheckIfFavorited(film.id)"/>
+        <div v-else>
+            <div v-if="!searching" :class="'PopularFilmsDivClass'">
+                <span :class="'PopularFilmsTitleClass'">{{ viewMode == "home" ? 'Popular Films' : 'Favorite Films' }}</span>
+                <FilmMini v-for="film in filmsData.results" :filmId="film.id" :imagePath="film.poster_path" :filmOverview="film.overview" :releaseDate="film.release_date != undefined ? film.release_date.slice(0,4) : 'N/A'" :rating="film.vote_average" :title="film.title" :onStartFavorited="CheckIfFavorited(film.id)"/>
+            </div>
+            <div v-else :class="'PopularFilmsDivClass'">
+                <span :class="'PopularFilmsTitleClass'">Search Films</span>
+                <FilmMini v-for="film in searchData.results" :filmId="film.id" :imagePath="film.poster_path" :filmOverview="film.overview" :releaseDate="film.release_date != undefined ? film.release_date.slice(0,4) : 'N/A'" :rating="film.vote_average" :title="film.title" :onStartFavorited="CheckIfFavorited(film.id)"/>
+            </div>
         </div>
-        <div v-else :class="'PopularFilmsDivClass'">
-            <span :class="'PopularFilmsTitleClass'">Search Films</span>
-            <FilmMini v-for="film in searchData.results" :filmId="film.id" :imagePath="film.poster_path" :filmOverview="film.overview" :releaseDate="film.release_date != undefined ? film.release_date.slice(0,4) : 'N/A'" :rating="film.vote_average" :title="film.title" :onStartFavorited="CheckIfFavorited(film.id)"/>
-        </div>
-        <PageNavigationComponent ref="ref_PageNavigationComponent" :maxPageCount="maxPageCount" @pageUpdate="PageUpdate"/>
+        <PageNavigationComponent ref="ref_PageNavigationComponent" :maxPageCount="maxPageCount" @PageUpdate="PageUpdate"/>
     </div>
 </template>
 
@@ -148,7 +155,6 @@
     bottom: 0;
     left: 0;
     overflow-y: auto;
-    z-index: 5;
 }
 .PopularFilmsDivClass{
     width: 100%;
@@ -166,25 +172,14 @@
     width: 100%;
     margin: 2vh 0 2vh 2vw;
 }
-.SearchInputClass{
-    border: none;
-    outline: none;
-    background-color: #393939;
-    color: var(--light-font-color);
-    font-size: 22px;
-    padding: 0.5vh 1vw 0.5vh 1vw;
-    border-radius: 6px;
-    text-align: center;
-    width: calc(100px + 10vw);
-}
-.SearchDivClass{
-    position: fixed;
-    right: 0;
-    top: 0;
-    height: var(--header-height);
+.NoResultsDiv{
+    width: 100%;
+    height: calc(100% - var(--page-nav-height) - var(--header-height));
+    font-size: 40px;
+    color: #a0a0a0;
+    padding: 2vh 2vw 2vh 2vw;
     display: flex;
-    justify-content: center;
+    text-align: center;
     align-items: center;
-    margin-right: 2vw;
 }
 </style>

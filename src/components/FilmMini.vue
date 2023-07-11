@@ -167,6 +167,7 @@
     justify-content: space-evenly;
     align-items: center;
     /* background-color: blue; */
+    margin-bottom: 1vh;
 }
 .FilmMiniFavoriteButtonClass{
     border: none;

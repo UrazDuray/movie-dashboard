@@ -7,15 +7,16 @@ import HeaderComponent from './components/HeaderComponent.vue';
   export default {
     data() {
       return {
-        progressBarLoadingState: false
+        progressBarLoadingState: false,
+        searchContent: ""
       }
     },
   }
 </script>
 
 <template>
-  <HeaderComponent/>
-  <RouterView @ProgressBarStateUpdate="(state) => progressBarLoadingState = state"/>
+  <HeaderComponent :searchContent="searchContent" @SearchContentUpdate="(content) => searchContent = content"/>
+  <RouterView :searchContent="searchContent" @OverrideSearchContent="(content) => searchContent = content" @ProgressBarStateUpdate="(state) => progressBarLoadingState = state"/>
   <div :class="['PageProgressBarClass', (progressBarLoadingState ? 'PageProgressBarClassLoadingAnimClass' : 'PageProgressBarClassLoadedAnimClass') ]">No connection</div>
 </template>
 

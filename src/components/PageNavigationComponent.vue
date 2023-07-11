@@ -6,20 +6,24 @@
         data() {
             return {
                 pageClient: 1,
+                scrollToTop: false,
                 realPage: 1,
                 wrongPageInput: false
             }
         },
         methods: {
             PageUpdate(mode, value){
+                let tempScrollToTop = false
                 if(mode == "increment"){
                     if(value > 0 && this.pageClient < this.maxPageCount){
                         this.pageClient++
                         this.realPage++
+                        tempScrollToTop = true
                     }
                     else if(value < 0 && this.pageClient != 1){
                         this.pageClient--
                         this.realPage--
+                        tempScrollToTop = true
                     }
                 } 
                 else if(mode == "set"){
@@ -32,15 +36,19 @@
                     this.realPage = value
                 }
                 this.wrongPageInput = false
+                this.scrollToTop = tempScrollToTop
             },
             OverridePage(page){
                 this.pageClient = this.realPage = page
+            },
+            EmitPageUpdate(page, scrollToTop){
+                this.$emit('PageUpdate', page, scrollToTop)
             }
         },
         watch:{
             realPage: {
                 handler: function(){
-                    this.$emit('pageUpdate', this.realPage)
+                    this.EmitPageUpdate(this.realPage, this.scrollToTop)
                 }
             }
         }
@@ -51,7 +59,7 @@
     <div :class="'PageNavigationDivClass'">
         <span :style="{textAlign: 'end'}" :class="'PageSideNumbersClass'">1</span>
         <button @click="PageUpdate('increment', -1)" :class="'PageNavigationButtonClass'"><img src="../icons/navigationArrowIcon.png" alt=""></button>
-        <input :style="wrongPageInput ? {color: 'red'} : null" @input="PageUpdate('set', $event.target.value)" :value="pageClient" :class="'PageNavigationInputClass'" type="text">
+        <input @keyup.enter="EmitPageUpdate(this.realPage, true)" :style="wrongPageInput ? {color: 'red'} : null" @input="PageUpdate('set', $event.target.value)" :value="pageClient" :class="'PageNavigationInputClass'" type="text">
         <button @click="PageUpdate('increment', 1)" :class="'PageNavigationButtonClass'"><img src="../icons/navigationArrowIcon.png" :style="{transform: 'rotate(180deg)'}" alt=""></button>
         <span :style="{textAlign: 'start'}" :class="'PageSideNumbersClass'">{{ maxPageCount }}</span>
     </div>

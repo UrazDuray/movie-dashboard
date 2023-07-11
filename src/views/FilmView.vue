@@ -274,9 +274,10 @@
     .FilmViewLeftDivClass{
         width: 100%;
         padding: 5vw;
+        margin-bottom: 8vh;
     }
     .CastDiv{
-        margin-top: 4vh;
+        margin-top: 4vh;        
     }
 }
 </style>
