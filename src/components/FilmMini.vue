@@ -43,16 +43,10 @@
                 })
             }
         },
-        mounted() {
-            this.favorited = this.onStartFavorited
-            this.UpdateFavoriteIconName()
-        },
         watch:{
-            onStartFavorited:{
-                handler: function (){
-                    this.favorited = this.onStartFavorited
-                    this.UpdateFavoriteIconName()
-                } 
+            onStartFavorited (){
+                this.favorited = this.onStartFavorited
+                this.UpdateFavoriteIconName()
             }
         }
 

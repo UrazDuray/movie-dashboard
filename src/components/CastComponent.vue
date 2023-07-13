@@ -61,7 +61,6 @@
     height: 200px;
     overflow: hidden;
     border-radius: 0.8vw 0.8vw 0vw 0vw;
-    
 }
 .TopDiv img{
     flex-shrink: 1;

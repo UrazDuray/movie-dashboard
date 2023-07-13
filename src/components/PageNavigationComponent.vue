@@ -6,37 +6,43 @@
         data() {
             return {
                 pageClient: 1,
-                scrollToTop: false,
                 realPage: 1,
+                scrollToTop: false,
                 wrongPageInput: false
             }
         },
         methods: {
             PageUpdate(mode, value){
-                let tempScrollToTop = false
-                if(mode == "increment"){
-                    if(value > 0 && this.pageClient < this.maxPageCount){
+                switch (mode) {
+                    case 'up': {
+                        if(this.pageClient >= this.maxPageCount) return
                         this.pageClient++
                         this.realPage++
-                        tempScrollToTop = true
+                        this.scrollToTop = true
+                        break
                     }
-                    else if(value < 0 && this.pageClient != 1){
+                    case 'down': {
+                        if(this.pageClient <= 1) return
                         this.pageClient--
                         this.realPage--
-                        tempScrollToTop = true
+                        this.scrollToTop = true
+                        break
                     }
-                } 
-                else if(mode == "set"){
-                    this.pageClient = value
-                    value = parseInt(value)
-                    if(isNaN(value) || value <= 0 || value > this.maxPageCount){
-                        this.wrongPageInput = true
-                        return 
+                    case 'set': {
+                        this.pageClient = value
+                        value = parseInt(value)
+                        if(isNaN(value) || value < 1 || value > this.maxPageCount){
+                            this.wrongPageInput = true
+                            return 
+                        }
+                        this.realPage = value
+                        this.scrollToTop = false
+                        break
                     }
-                    this.realPage = value
+                    default:
+                        break;
                 }
                 this.wrongPageInput = false
-                this.scrollToTop = tempScrollToTop
             },
             OverridePage(page){
                 this.pageClient = this.realPage = page
@@ -58,9 +64,9 @@
 <template>
     <div :class="'PageNavigationDivClass'">
         <span :style="{textAlign: 'end'}" :class="'PageSideNumbersClass'">1</span>
-        <button @click="PageUpdate('increment', -1)" :class="'PageNavigationButtonClass'"><img src="../icons/navigationArrowIcon.png" alt=""></button>
+        <button @click="PageUpdate('down')" :class="'PageNavigationButtonClass'"><img src="../icons/navigationArrowIcon.png" alt=""></button>
         <input @keyup.enter="EmitPageUpdate(this.realPage, true)" :style="wrongPageInput ? {color: 'red'} : null" @input="PageUpdate('set', $event.target.value)" :value="pageClient" :class="'PageNavigationInputClass'" type="text">
-        <button @click="PageUpdate('increment', 1)" :class="'PageNavigationButtonClass'"><img src="../icons/navigationArrowIcon.png" :style="{transform: 'rotate(180deg)'}" alt=""></button>
+        <button @click="PageUpdate('up')" :class="'PageNavigationButtonClass'"><img src="../icons/navigationArrowIcon.png" :style="{transform: 'rotate(180deg)'}" alt=""></button>
         <span :style="{textAlign: 'start'}" :class="'PageSideNumbersClass'">{{ maxPageCount }}</span>
     </div>
 </template>
